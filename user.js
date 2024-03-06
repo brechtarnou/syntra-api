@@ -27,9 +27,16 @@ router.get("/", async (req, res) => {
   res.json(users);
 });
 
-router.get("/:id", async (req, res) => {
-  const user = await User.findByPk(req.params.id);
+router.get("/:email", async (req, res) => {
+  const user = await User.findByPk(req.params.email);
   res.json(user);
+});
+router.post("/login", async (req, res) => {
+  const user = await User.findByPk(req.body.email);
+  if (user.password === req.body.password) {
+    return res.status(200).json(user);
+  }
+  return res.status(401).json("Incorrect password.");
 });
 
 router.post("/", async (req, res) => {
